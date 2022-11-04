@@ -14,11 +14,11 @@ app.use(express.json());
 dotenv.config();
 conectarDB();
 
-const dominiosPermitios = [process.env.FRONTEND_URL]
+const dominiosPermitidos = [process.env.FRONTEND_URL]
 
 const corsOptions = {
     origin: function(origin, callback) {
-        if(dominiosPermitios.indexOf(origin) !== -1 ) {
+        if(dominiosPermitidos.indexOf(origin) !== -1 ) {
             // El origen del request está permitido
             callback(null, true) // <-- Primer parámetro es un error null (no error), segundo, le permite la conexión
         }
