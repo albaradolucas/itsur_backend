@@ -14,7 +14,7 @@ app.use(express.json());
 dotenv.config();
 conectarDB();
 
-const dominiosPermitios = ["http://localhost:5173"]
+const dominiosPermitios = [process.env.FRONTEND_URL]
 
 const corsOptions = {
     origin: function(origin, callback) {
