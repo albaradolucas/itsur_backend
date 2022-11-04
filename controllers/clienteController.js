@@ -2,9 +2,11 @@
 import Cliente from "../models/Cliente.js";
 import generarJWT from "../helpers/generarJWT.js";
 import generarId from "../helpers/generarId.js";
+import emailRegistro from "../helpers/emailRegistro.js";
+import emailOlvidePassword from "../helpers/emailOlvidePassword.js";
 
 const registrar = async (req, res) => {
-    const { email} = req.body;
+    const { email, nombre} = req.body;
 
     // Prevenir usuarios duplicados
     const existeUsuario = await Cliente.findOne({ email });
@@ -18,6 +20,13 @@ const registrar = async (req, res) => {
         // Guardar un nuevo veterinario
         const cliente = new Cliente(req.body);
         const clienteGuardado = await cliente.save();
+
+        // Enviar el email <-- Buen lugar dps de guardar el nuevo usuario, por el await, en caso de que haya algún problema
+        emailRegistro({
+            email,
+            nombre,
+            token: clienteGuardado.token,
+        });
 
         res.json(clienteGuardado);
     } catch (error) {
@@ -59,7 +68,7 @@ const autenticar = async (req, res) => {
 
     if (!usuario) {
         const error = new Error("El usuario no existe");
-        return process.env.MSG_ERR;
+        return res.status(403).json({ msg: error.message });
     }
 
     // Comprobrar si el usuario está confirmado
