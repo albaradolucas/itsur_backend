@@ -28,7 +28,5 @@ router
 
 // Rutas área privada
 router.get("/perfil", checkAuth, perfil);
-// router.put("/perfil/:id", checkAuth, actualizarPerfil);
-// router.put("/actualizar-password", checkAuth, actualizarPassword);
 
 export default router;
